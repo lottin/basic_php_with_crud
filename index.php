@@ -1,15 +1,9 @@
-<?php 
-$conn = mysqli_connect('localhost', 'root', '', 'ninja_pizza');
-if(!$conn){
-    echo "connection errors:".mysqli_connect_error();
-}
+<?php include_once 'config/db_connect.php';
 $sql = "SELECT id, title, ingredients  FROM pizzas;";
 $result = mysqli_query($conn, $sql);
 $pizzas = mysqli_fetch_all($result, MYSQLI_ASSOC);
 mysqli_free_result($result);
 mysqli_close($conn);
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,18 +12,23 @@ mysqli_close($conn);
        <div class="container">
            <div class="row">
                <?php 
-                  foreach($pizzas as $pizza){ ?>
+                  foreach($pizzas as $pizza): ?>
                   <div class="col s6 md3">
                     <div class="card z-depth-0">
-                        <div class="card-content center"><h6><?php echo htmlspecialchars($pizza['title'])?></h6>
-                        <div><?php echo htmlspecialchars($pizza['ingredients'])?></div>
+                        <div class="card-content center">
+                            <h6><?php echo htmlspecialchars($pizza['title'])?></h6>
+                            <ul>
+                                <?php foreach(explode(",", $pizzas[0]['ingredients']) as $ing): ?>
+                                    <li><?php echo htmlspecialchars($ing)?></li>
+                                <?php endforeach ?>
+                            </ul>
                     </div>
                         <div class="card-action right-align">
-                            <a href="#" class="brand-text">More info</a>
+                            <a href="details.php?id=<?php echo $pizza['id']?>" class="brand-text" >More info</a>
                         </div>
                     </div>
                   </div>    
-                  <?php } ?>
+                  <?php endforeach ?>
                
            </div>
        </div>

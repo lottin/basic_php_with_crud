@@ -20,9 +20,9 @@
 <body class="grey lighten-4" >
     <nav class="white">
         <div class="container">
-            <a href="#" class="brand-logo brand-text ">Ramish Benoit</a>
+            <a href="index.php" class="brand-logo brand-text ">Ramish Benoit</a>
             <ul id="nav-mobile" class="right">
-                <li><a href="#" class="btn z-depth-0 brand">Add Pizza</a></li>
+                <li><a href="./add.php" class="btn z-depth-0 brand">Add Pizza</a></li>
             </ul>
         </div>  
     </nav>

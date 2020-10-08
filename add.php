@@ -1,30 +1,47 @@
 <?php 
-
-$email = $_POST['email'];
-$title = $_POST['title'];
-$ingredients =$_POST['ingredients'];
+include_once 'config/db_connect.php';
+$email =$title =$ingredients='';
 $errors =[ 'email'=>'', 'title'=>'', 'ingredients'=>'', 'all'=>''];
 if(isset($_POST['submit'])){
+    $email = $_POST['email'];
+    $title = $_POST['title'];
+    $ingredients =$_POST['ingredients'];
     if(empty($_POST['email']) || empty($_POST['title'])|| empty($_POST['ingredients'])){
         $errors['all']= "All field are required";
     }else{
         //code
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        $email =$_POST['email'];
+        $title =$_POST['title'];
+        $ingredients=$_POST['ingredients'];
+        if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
             $errors['email'] = "Must be a valid email address";
         }
-        if(!preg_match('/^[a-zA-Z\s]+$/',$title)){
-            $errors['title'] = "Must be letters and spaces";
-        }
-        if(!preg_match('/^([a-zA-Z\s]+)(,\$*[a-zA-Z\s]*)*$/',$ingredients)){
+        // if(!preg_match('/^[a-zA-Z\s]+$/',$_POST['title'])){
+        //     $errors['title'] = "Must be letters and spaces";
+        // }
+        if(!preg_match('/^([a-zA-Z\s]+)(,\$*[a-zA-Z\s]*)*$/',$_POST['ingredients'])){
             $errors['ingredients'] = "Must be a comma separated list";
         }   
+        if(array_filter($errors)){
+            //do nothing 
+        }else{
+            $email = mysqli_real_escape_string($conn, $_POST['email']);
+            $title = mysqli_real_escape_string($conn, $_POST['title']);
+            $ingredients = mysqli_real_escape_string($conn, $_POST['ingredients']);
+    
+            $sql = "INSERT INTO pizzas(title, email, ingredients) VALUE('$email', '$title', '$ingredients'); ";
+    
+            if(mysqli_query($conn, $sql)){
+                
+                header('Location:./index.php');
+            }else{
+                echo "error with the sql query";
+            }
+           
+            
+        }
     }
-    // if(array_filter($errors)){
-    //     //do nothing 
-    // }else{
-    //     //redirect users to index.php
-    //     header('Location:index.php');
-    // }
+    
 }
 ?>
 
