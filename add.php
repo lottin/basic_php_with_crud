@@ -10,15 +10,21 @@ if(isset($_POST['submit'])){
     }else{
         //code
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-            $error['email'] = "Must be a valid email address";
+            $errors['email'] = "Must be a valid email address";
         }
         if(!preg_match('/^[a-zA-Z\s]+$/',$title)){
-            $error['title'] = "Must be letters and spaces";
+            $errors['title'] = "Must be letters and spaces";
         }
-        if(!preg_match('/^([a-zA-Z\s]+)(,\$*[a-zA-Z\s]*)*$/',$ingridients)){
-            $error['ingredients'] = "Must be a comma separated list";
-        }
+        if(!preg_match('/^([a-zA-Z\s]+)(,\$*[a-zA-Z\s]*)*$/',$ingredients)){
+            $errors['ingredients'] = "Must be a comma separated list";
+        }   
     }
+    // if(array_filter($errors)){
+    //     //do nothing 
+    // }else{
+    //     //redirect users to index.php
+    //     header('Location:index.php');
+    // }
 }
 ?>
 
@@ -29,13 +35,13 @@ if(isset($_POST['submit'])){
        <h4 class="center">Add pizza</h4>
        <form action="add.php" class="white" method="POST">
            <label for="email">your email</label>
-           <input type="email" name="email">
+           <input type="email" name="email" value='<?php echo htmlspecialchars($email)?>'>
            <div class="red-text"><?php echo $errors['email']?></div>
            <label for="">Pizza title</label>
-           <input type="text" name="title">
+           <input type="text" name="title" value='<?php echo htmlspecialchars($title) ?>'>
            <div class="red-text"><?php echo $errors['title']?></div>
            <label for="">Ingridients(comma separated)</label>
-           <input type="text" name="ingredients">
+           <input type="text" name="ingredients" value='<?php echo htmlspecialchars($ingredients) ?>'>
            <div class="red-text"><?php echo $errors['ingredients']?></div>
            <div class="red-text center"><?php echo $errors['all']?></div>
            <div class="center">
